@@ -12,28 +12,31 @@ CREATE EXTENSION IF NOT EXISTS pg_cron;
 -- Note: You'll need to replace YOUR_PROJECT_URL and SERVICE_ROLE_KEY
 -- after creating your Supabase project
 
--- Uncomment and update the following after setting up your project:
-/*
+-- IMPORTANT: Replace YOUR_SECRET_KEY below with your actual SUPABASE_SECRET_KEY from .env
+-- before running this migration
+
+-- For security, you can also set this up via Supabase Dashboard:
+-- Dashboard > Database > Cron Jobs > Create new cron job
+-- This avoids storing the secret key in migration files
+
 SELECT cron.schedule(
   'scrape-currencies-hourly',
   '0 * * * *',  -- Every hour at minute 0
   $$
   SELECT net.http_post(
-    url := 'https://YOUR_PROJECT_URL.supabase.co/functions/v1/scrape-currencies',
+    url := 'https://sgqnbkpbtjxuvrayttpq.supabase.co/functions/v1/scrape-currencies',
     headers := jsonb_build_object(
       'Content-Type', 'application/json',
-      'Authorization', 'Bearer YOUR_SERVICE_ROLE_KEY'
+      'Authorization', 'Bearer YOUR_SECRET_KEY'
     ),
     body := '{}'::jsonb
   ) AS request_id;
   $$
 );
-*/
 
 -- ============================================================================
 -- SCHEDULE CLEANUP JOB (Runs daily at 3 AM)
 -- ============================================================================
-/*
 SELECT cron.schedule(
   'cleanup-old-rates-daily',
   '0 3 * * *',  -- Every day at 3 AM
@@ -41,7 +44,6 @@ SELECT cron.schedule(
   SELECT cleanup_old_rates();
   $$
 );
-*/
 
 -- ============================================================================
 -- VIEW SCHEDULED JOBS
