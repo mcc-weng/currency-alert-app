@@ -23,8 +23,9 @@ serve(async (req) => {
   const startTime = Date.now()
 
   // Initialize Supabase client
+  // Note: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are automatically provided by Supabase
   const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-  const supabaseKey = Deno.env.get('SUPABASE_SECRET_KEY')!
+  const supabaseKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
   const supabase = createClient(supabaseUrl, supabaseKey)
 
   console.log('Starting currency scrape...', { currencies: CURRENCIES })
