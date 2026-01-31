@@ -1,10 +1,12 @@
 import { StyleSheet, FlatList, RefreshControl, View } from 'react-native'
 import { Text, ActivityIndicator } from 'react-native-paper'
+import { useRouter } from 'expo-router'
 import { useBestRates } from '@/hooks/useRates'
 import { CurrencyCard } from '@/components/rates/CurrencyCard'
 import { colors, spacing } from '@/lib/theme'
 
 export default function HomeScreen() {
+  const router = useRouter()
   const { rates, loading, error, refetch } = useBestRates()
 
   if (loading && rates.length === 0) {
@@ -42,10 +44,7 @@ export default function HomeScreen() {
         renderItem={({ item }) => (
           <CurrencyCard
             rate={item}
-            onPress={() => {
-              // TODO: Navigate to currency detail screen
-              console.log('Navigate to', item.currency_code)
-            }}
+            onPress={() => router.push(`/currency/${item.currency_code}`)}
           />
         )}
         refreshControl={
